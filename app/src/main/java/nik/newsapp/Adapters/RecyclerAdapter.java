@@ -19,8 +19,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.zip.Inflater;
 
 import nik.newsapp.R;
+import nik.newsapp.Views.BrowseInApp;
 
 /**
  * Created by nikhil on 27/07/2018.
@@ -49,14 +51,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in =new Intent(Intent.ACTION_VIEW);
                 int position = holder.getLayoutPosition();
-                in.setData(Uri.parse(results.get(position).get("link")));
-                context.startActivity(in);
+                Intent intent = new Intent(context,BrowseInApp.class);
+                intent.putExtra("link",results.get(position).get("link"));
+                context.startActivity(intent);
 
             }
         });
+        holder.share.setOnContextClickListener(new View.OnContextClickListener() {
+            @Override
+            public boolean onContextClick(View view) {
 
+            return true;
+            }
+        });
 
         return holder;
     }
@@ -69,6 +77,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
         holder.description.setText(results.get(position).get("description"));
         holder.date.setText(results.get(position).get("Date").substring(0,17));
         Picasso.get().load(results.get(position).get("Image")).into(holder.image);
+        holder.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
+                share.putExtra(Intent.EXTRA_TEXT, "In headlines this week:\n"+results.get(position).get("title")+"\nRead full article : "+results.get(position).get("link"));
+                context.startActivity(Intent.createChooser(share, "Share this article!"));
+            }
+        });
+
     }
 
 
@@ -82,7 +102,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
 
     class Holder extends RecyclerView.ViewHolder {
         TextView topic;
-        ImageView image;
+        ImageView image,share;
         TextView description;
         TextView date;
 
@@ -92,9 +112,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
             image=(ImageView) itemView.findViewById(R.id.image);
             description=(TextView) itemView.findViewById(R.id.desc);
             date=(TextView)itemView.findViewById(R.id.date);
+            share=(ImageView)itemView.findViewById(R.id.share_icon);
 
 
         }
+
 
 
     }
