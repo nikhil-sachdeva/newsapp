@@ -3,7 +3,7 @@
     package="nik.newsapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -26,8 +26,12 @@
             android:name=".Views.Category"
             android:label="@string/title_activity_category"
             android:parentActivityName=".Views.Main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <receiver android:name=".AlarmReceiver"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <receiver android:name=".AlarmReceiver" />
+
+        <activity android:name=".Views.BrowseInApp"
+            android:parentActivityName=".Views.Main"></activity>
     </application>
 
 </manifest>
