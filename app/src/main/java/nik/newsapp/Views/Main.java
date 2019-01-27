@@ -1,5 +1,8 @@
 package nik.newsapp.Views;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,12 +13,22 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Calendar;
+import java.util.HashMap;
+
 import nik.newsapp.Adapters.MyAdapter;
+import nik.newsapp.AlarmReceiver;
 import nik.newsapp.R;
+import nik.newsapp.Utils.BackgroundProcess;
+import nik.newsapp.Utils.xmlParser;
 
 
 public class Main extends AppCompatActivity {
@@ -76,7 +89,14 @@ public class Main extends AppCompatActivity {
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         MyAdapter myAdapter=new MyAdapter(fragmentManager);
         pager.setAdapter(myAdapter);
+        if(tabLayout.getTabAt(0)!=null && tabLayout.getTabAt(1)!=null) {
+            tabLayout.getTabAt(0).setIcon(getResources().getDrawable(R.drawable.feed_selector));
+            tabLayout.getTabAt(1).setIcon(getResources().getDrawable(R.drawable.trending_selector));
+        }
 
+        BackgroundProcess backgroundProcess = new BackgroundProcess("http://feeds.feedburner.com/ndtvnews-trending-news");
+        backgroundProcess.execute();
+        //Log.d("topp",backgroundProcess.getTopArticle().toString());
     }
 
     @Override

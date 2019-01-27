@@ -45,4 +45,5 @@ public class MyAdapter extends FragmentPagerAdapter {
         else return "Trending";
     }
 
+
 }

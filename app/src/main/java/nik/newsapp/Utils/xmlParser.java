@@ -19,7 +19,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 
 public class xmlParser {
-    public static ArrayList<HashMap<String,String >> processXML(InputStream inputStream) throws Exception{
+
+   private ArrayList<HashMap<String ,String>> results=new ArrayList<>();
+
+
+
+    public ArrayList<HashMap<String,String >> processXML(InputStream inputStream) throws Exception{
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = null;
 
@@ -33,7 +38,6 @@ public class xmlParser {
         Node currentChild=null;
         Node currentItem=null;
         HashMap<String,String > feedMap=null;
-        ArrayList<HashMap<String ,String>> results=new ArrayList<>();
 
 
         for(int i=0;i<itemsList.getLength();i++){
@@ -74,5 +78,9 @@ public class xmlParser {
 
         return results;
     }
+    public HashMap<String,String> getTopArticle(){
+        return results.get(0);
+    }
+
 
 }
