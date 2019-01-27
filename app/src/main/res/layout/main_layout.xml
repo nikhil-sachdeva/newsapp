@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nik.newsapp.Views.Feed">
+    tools:context="nik.newsapp.Views.Feed"
+    android:background="#30000000">
 
 
     <android.support.v4.widget.DrawerLayout
@@ -34,6 +35,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tab_layout"
                     app:tabGravity="fill"
+                    app:tabSelectedTextColor="@color/colorPrimaryDark"
                     app:tabMode="fixed"
                     android:background="@color/colorPrimary"
                     app:tabTextColor="@color/white"/>
