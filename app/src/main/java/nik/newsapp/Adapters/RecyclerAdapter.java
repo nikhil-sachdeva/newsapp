@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.zip.Inflater;
 
+import javax.inject.Inject;
+
 import nik.newsapp.R;
 import nik.newsapp.Views.BrowseInApp;
 
@@ -35,12 +37,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
     ArrayList<HashMap<String ,String >> results=new ArrayList<>();
     Context context;
 
-
-    public RecyclerAdapter(Context context,  ArrayList<HashMap<String ,String >> results) {
-        this.context=context;
-        this.results=results;
-        inflater = LayoutInflater.from(context);
-
+    @Inject
+    public RecyclerAdapter() {
     }
 
     @NonNull
@@ -121,4 +119,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
 
     }
 
+    public void setContext(Context context) {
+        this.context = context;
+        inflater = LayoutInflater.from(context);
+    }
+
+    public void setResults(ArrayList<HashMap<String, String>> results) {
+        this.results = results;
+    }
 }

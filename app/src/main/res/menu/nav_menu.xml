@@ -1,30 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
+    <group
+        android:checkableBehavior="single">
         <item
             android:id="@+id/world"
             android:icon="@drawable/world_icon"
             android:title="World" />
+    </group>
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/business"
             android:icon="@drawable/business_icon"
             android:title="Business" />
+    </group>
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/tech"
             android:icon="@drawable/tech_icon"
             android:title="Tech" />
+    </group>
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/auto"
             android:icon="@drawable/auto_icon"
             android:title="Auto" />
+    </group>
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/sports"
             android:icon="@drawable/sports_icon"
             android:title="Sports" />
-        <item
+    </group>
+    <group android:checkableBehavior="single">
+    <item
             android:id="@+id/health"
             android:icon="@drawable/health_icon"
             android:title="Health" />
-
     </group>
+
 </menu>

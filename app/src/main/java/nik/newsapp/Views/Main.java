@@ -24,8 +24,12 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import javax.inject.Inject;
+
 import nik.newsapp.Adapters.MyAdapter;
+import nik.newsapp.Adapters.RecyclerAdapter;
 import nik.newsapp.AlarmReceiver;
+import nik.newsapp.Injection.DaggerApplicationComponent;
 import nik.newsapp.R;
 import nik.newsapp.Utils.BackgroundProcess;
 import nik.newsapp.Utils.xmlParser;
@@ -36,6 +40,8 @@ public class Main extends AppCompatActivity {
     ViewPager pager=null;
     DrawerLayout mDrawerLayout;
     ListView feedList;
+    @Inject
+    RecyclerAdapter recyclerAdapter;
 
 
     @Override
@@ -94,6 +100,10 @@ public class Main extends AppCompatActivity {
             tabLayout.getTabAt(1).setIcon(getResources().getDrawable(R.drawable.trending_selector));
         }
 
+        DaggerApplicationComponent.builder().build().inject(this);
+        if(recyclerAdapter!=null){
+            Log.d("sd", "onCreate: donee");
+        }
         BackgroundProcess backgroundProcess = new BackgroundProcess("http://feeds.feedburner.com/ndtvnews-trending-news");
         backgroundProcess.execute();
         //Log.d("topp",backgroundProcess.getTopArticle().toString());

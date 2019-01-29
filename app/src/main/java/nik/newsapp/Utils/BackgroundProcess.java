@@ -16,12 +16,15 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import nik.newsapp.Adapters.RecyclerAdapter;
 import nik.newsapp.AlarmReceiver;
+import nik.newsapp.Injection.DaggerApplicationComponent;
 import nik.newsapp.Views.Trending;
 
 import static android.content.Context.ALARM_SERVICE;
@@ -33,6 +36,10 @@ public class BackgroundProcess {
     Context context;
     String url;
     int mode=0;
+
+    @Inject
+    RecyclerAdapter recyclerAdapter;
+
     HashMap<String,String> article= new HashMap<>();
     public  BackgroundProcess(String url,RecyclerView list, Context context){
         this.url=url;
@@ -41,6 +48,8 @@ public class BackgroundProcess {
         dialog=new ProgressDialog(context);
         dialog.setMessage("Fetching news for you :-)");
         dialog.setCancelable(false);
+
+        DaggerApplicationComponent.builder().build().inject(this);
 
     }
     public BackgroundProcess(String url){
@@ -67,10 +76,9 @@ if(dialog!=null)  dialog.show();
       }).subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe((result)->{
-                  Log.d("check rs", "getData: "+results.toString());
-                  Log.d("check r", "getData: "+result.toString());
                   if(mode==0) {
-                      RecyclerAdapter recyclerAdapter = new RecyclerAdapter(context, results);
+                      recyclerAdapter.setContext(context);
+                      recyclerAdapter.setResults(results);
                       setTopArticle(results.get(0));
                       list.setAdapter(recyclerAdapter);
 
@@ -85,10 +93,6 @@ if(dialog!=null)  dialog.show();
                       if(am != null) {
                           am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 10, pendingIntent);
                       }
-
-
-
-
 
 
                       dialog.dismiss();
