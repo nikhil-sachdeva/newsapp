@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -44,7 +45,10 @@ public class Feed extends Fragment {
         list.setHasFixedSize(true);
         list.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
+        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            getActivity().setTheme(R.style.DarkTheme);
+            Log.d("dark", "onCreate: set main 1");
+        }
         backgroundProcess = new BackgroundProcess("http://feeds.feedburner.com/ndtvnews-latest",list,getContext());
         backgroundProcess.execute();
 

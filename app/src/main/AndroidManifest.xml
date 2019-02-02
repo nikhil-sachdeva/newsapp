@@ -18,7 +18,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -30,8 +30,10 @@
 
         <receiver android:name=".AlarmReceiver" />
 
-        <activity android:name=".Views.BrowseInApp"
-            android:parentActivityName=".Views.Main"></activity>
+        <activity
+            android:name=".Views.BrowseInApp"
+            android:parentActivityName=".Views.Main" />
+        <activity android:name=".Views.Settings"></activity>
     </application>
 
 </manifest>
