@@ -43,6 +43,8 @@ public class Main extends AppCompatActivity {
     ListView feedList;
     @Inject
     RecyclerAdapter recyclerAdapter;
+    @Inject
+    BackgroundProcess backgroundProcess;
 
 
     @Override
@@ -113,8 +115,9 @@ public class Main extends AppCompatActivity {
         if(recyclerAdapter!=null){
             Log.d("sd", "onCreate: donee");
         }
-        BackgroundProcess backgroundProcess = new BackgroundProcess("http://feeds.feedburner.com/ndtvnews-trending-news");
-        backgroundProcess.execute();
+        backgroundProcess.setContext(this);
+        backgroundProcess.setUrl("http://feeds.feedburner.com/ndtvnews-trending-news");
+        backgroundProcess.topnewsnotify();
         //Log.d("topp",backgroundProcess.getTopArticle().toString());
     }
 
@@ -123,6 +126,11 @@ public class Main extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_feed, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        mDrawerLayout.closeDrawer(GravityCompat.START);
     }
 
     @Override

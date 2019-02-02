@@ -21,6 +21,8 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import nik.newsapp.Adapters.RecyclerAdapter;
 import nik.newsapp.AlarmReceiver;
@@ -35,31 +37,24 @@ public class BackgroundProcess {
     RecyclerView list;
     Context context;
     String url;
-    int mode=0;
+
 
     @Inject
     RecyclerAdapter recyclerAdapter;
 
     HashMap<String,String> article= new HashMap<>();
-    public  BackgroundProcess(String url,RecyclerView list, Context context){
-        this.url=url;
-        this.context=context;
-        this.list=list;
-        dialog=new ProgressDialog(context);
-        dialog.setMessage("Fetching news for you :-)");
-        dialog.setCancelable(false);
-
-        DaggerApplicationComponent.builder().build().inject(this);
-
+    public  BackgroundProcess(){
     }
-    public BackgroundProcess(String url){
-        this.url=url;
-        mode=1;
-    }
+
 public void execute(){
 if(dialog!=null)  dialog.show();
     xmlParser xmlparser = new xmlParser();
-      Observable.fromCallable(() -> {
+
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+
+
+    Observable.fromCallable(() -> {
           try {
               URL feedURL=new URL(url);
               HttpURLConnection connection=(HttpURLConnection)feedURL.openConnection();
@@ -76,30 +71,56 @@ if(dialog!=null)  dialog.show();
       }).subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe((result)->{
-                  if(mode==0) {
                       recyclerAdapter.setContext(context);
                       recyclerAdapter.setResults(results);
                       setTopArticle(results.get(0));
                       list.setAdapter(recyclerAdapter);
-
-                        article=results.get(0);
-                      Calendar calendar = Calendar.getInstance();
-                      Intent intent1 = new Intent(context, AlarmReceiver.class);
-                      if(article!=null && !article.isEmpty()) {
-                          intent1.putExtra("article", article);
-                      }
-                      PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
-                      AlarmManager am = (AlarmManager)context.getSystemService(ALARM_SERVICE);
-                      if(am != null) {
-                          am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 10, pendingIntent);
-                      }
-
-
                       dialog.dismiss();
-                  }
               });
 
+
 }
+
+
+
+    public void topnewsnotify(){
+        xmlParser xmlparser = new xmlParser();
+
+
+
+        Observable.fromCallable(() -> {
+            try {
+                URL feedURL=new URL(url);
+                HttpURLConnection connection=(HttpURLConnection)feedURL.openConnection();
+                connection.setRequestMethod("GET");
+                InputStream inputStream = connection.getInputStream();
+                results = xmlparser.processXML(inputStream);
+                Log.d("RES", "getData: "+results.toString());
+                return results;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((result)->{
+                        article=results.get(0);
+                        Calendar calendar = Calendar.getInstance();
+                        Intent intent1 = new Intent(context, AlarmReceiver.class);
+                        if(article!=null && !article.isEmpty()) {
+                            intent1.putExtra("article", article);
+                        }
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+                        AlarmManager am = (AlarmManager)context.getSystemService(ALARM_SERVICE);
+                        if(am != null) {
+                            am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 10, pendingIntent);
+                        }
+
+                });
+
+
+    }
 
 
 
@@ -114,7 +135,19 @@ if(dialog!=null)  dialog.show();
         Log.d("setting", "setTopArticle: "+article.toString());
     }
 
+    public void setContext(Context context) {
+        this.context = context;
+        DaggerApplicationComponent.builder().build().inject(this);
+        dialog=new ProgressDialog(context);
+        dialog.setMessage("Fetching news for you :-)");
+        dialog.setCancelable(false);
+    }
 
+    public void setList(RecyclerView list) {
+        this.list = list;
+    }
 
-
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

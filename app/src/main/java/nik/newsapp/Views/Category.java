@@ -13,12 +13,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import javax.inject.Inject;
+
+import nik.newsapp.Injection.DaggerApplicationComponent;
 import nik.newsapp.R;
 import nik.newsapp.Utils.BackgroundProcess;
 
 public class Category extends AppCompatActivity {
     RecyclerView cat_list;
     SwipeRefreshLayout swipe;
+    @Inject
     BackgroundProcess backgroundProcess;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +36,7 @@ public class Category extends AppCompatActivity {
         swipe=findViewById(R.id.swipe);
         cat_list.setHasFixedSize(true);
         cat_list.setLayoutManager(new LinearLayoutManager(this));
-
+        DaggerApplicationComponent.builder().build().inject(this);
 
         if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
             setTheme(R.style.DarkTheme);
@@ -44,32 +48,44 @@ public class Category extends AppCompatActivity {
         int id = in.getIntExtra("id",0);
         if(id==1) {
             getSupportActionBar().setTitle("World");
-            backgroundProcess = new BackgroundProcess("http://feeds.feedburner.com/ndtvnews-world-news",cat_list,this);
+            backgroundProcess.setUrl("http://feeds.feedburner.com/ndtvnews-world-news");
+            backgroundProcess.setList(cat_list);
+            backgroundProcess.setContext(this);
             backgroundProcess.execute();
         }
         if(id==2) {
             getSupportActionBar().setTitle("Business");
-            backgroundProcess = new BackgroundProcess("http://feeds.feedburner.com/ndtvprofit-latest",cat_list,this);
+            backgroundProcess.setUrl("http://feeds.feedburner.com/ndtvprofit-latest");
+            backgroundProcess.setList(cat_list);
+            backgroundProcess.setContext(this);
             backgroundProcess.execute();
         }
         if(id==3) {
             getSupportActionBar().setTitle("Tech");
-            backgroundProcess = new BackgroundProcess("http://feeds.feedburner.com/gadgets360-latest",cat_list,this);
+            backgroundProcess.setUrl("http://feeds.feedburner.com/gadgets360-latest");
+            backgroundProcess.setList(cat_list);
+            backgroundProcess.setContext(this);
             backgroundProcess.execute();
         }
         if(id==4) {
             getSupportActionBar().setTitle("Auto");
-            backgroundProcess = new BackgroundProcess("http://feeds.feedburner.com/carandbike-latest",cat_list,this);
+            backgroundProcess.setUrl("http://feeds.feedburner.com/carandbike-latest");
+            backgroundProcess.setList(cat_list);
+            backgroundProcess.setContext(this);
             backgroundProcess.execute();
         }
         if(id==5) {
             getSupportActionBar().setTitle("Sports");
-            backgroundProcess = new BackgroundProcess("http://feeds.feedburner.com/ndtvsports-latest",cat_list,this);
+            backgroundProcess.setUrl("http://feeds.feedburner.com/ndtvsports-latest");
+            backgroundProcess.setList(cat_list);
+            backgroundProcess.setContext(this);
             backgroundProcess.execute();
         }
         if(id==6) {
-            getSupportActionBar().setTitle("Health");
-            backgroundProcess = new BackgroundProcess("http://feeds.feedburner.com/ndtvnews-latest",cat_list,this);
+            getSupportActionBar().setTitle("Food");
+            backgroundProcess.setUrl("http://feeds.feedburner.com/ndtvcooks-latest");
+            backgroundProcess.setList(cat_list);
+            backgroundProcess.setContext(this);
             backgroundProcess.execute();
         }
 

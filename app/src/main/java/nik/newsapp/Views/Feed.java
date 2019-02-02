@@ -20,7 +20,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import javax.inject.Inject;
+
 import nik.newsapp.AlarmReceiver;
+import nik.newsapp.Injection.DaggerApplicationComponent;
 import nik.newsapp.R;
 import nik.newsapp.Utils.BackgroundProcess;
 
@@ -34,6 +37,7 @@ public class Feed extends Fragment {
     ListView feedList;
     RecyclerView list;
     SwipeRefreshLayout swipe;
+    @Inject
     BackgroundProcess backgroundProcess;
     @Nullable
     @Override
@@ -44,12 +48,15 @@ public class Feed extends Fragment {
         swipe=view.findViewById(R.id.swipe);
         list.setHasFixedSize(true);
         list.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        DaggerApplicationComponent.builder().build().inject(this);
         if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
             getActivity().setTheme(R.style.DarkTheme);
             Log.d("dark", "onCreate: set main 1");
         }
-        backgroundProcess = new BackgroundProcess("http://feeds.feedburner.com/ndtvnews-latest",list,getContext());
+
+        backgroundProcess.setUrl("http://feeds.feedburner.com/ndtvnews-latest");
+        backgroundProcess.setList(list);
+        backgroundProcess.setContext(getContext());
         backgroundProcess.execute();
 
 

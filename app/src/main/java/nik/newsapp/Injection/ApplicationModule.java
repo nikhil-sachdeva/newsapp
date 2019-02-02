@@ -6,6 +6,7 @@ import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import nik.newsapp.Adapters.RecyclerAdapter;
+import nik.newsapp.Utils.BackgroundProcess;
 import nik.newsapp.Views.Main;
 
 @Module
@@ -17,5 +18,9 @@ import nik.newsapp.Views.Main;
        return new RecyclerAdapter();
     }
 
+    @Provides
+    BackgroundProcess provideBackgroundProcess(){
+        return new BackgroundProcess();
+    }
 
 }

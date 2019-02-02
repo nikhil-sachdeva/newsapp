@@ -19,7 +19,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import nik.newsapp.AlarmReceiver;
+import nik.newsapp.Injection.DaggerApplicationComponent;
 import nik.newsapp.R;
 import nik.newsapp.Utils.BackgroundProcess;
 
@@ -32,6 +35,7 @@ import static android.content.Context.ALARM_SERVICE;
 public class Trending extends Fragment {
     RecyclerView list;
     SwipeRefreshLayout swipe;
+    @Inject
     BackgroundProcess backgroundProcess;
     HashMap<String,String> article = new HashMap<>();
 
@@ -43,8 +47,10 @@ public class Trending extends Fragment {
         list.setHasFixedSize(true);
         list.setLayoutManager(new LinearLayoutManager(getContext()));
         swipe=view.findViewById(R.id.swipe);
-
-        backgroundProcess = new BackgroundProcess("http://feeds.feedburner.com/ndtvnews-trending-news",list,getContext());
+        DaggerApplicationComponent.builder().build().inject(this);
+        backgroundProcess.setUrl("http://feeds.feedburner.com/ndtvnews-trending-news");
+        backgroundProcess.setList(list);
+        backgroundProcess.setContext(getContext());
         backgroundProcess.execute();
 
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -56,10 +62,6 @@ public class Trending extends Fragment {
         });
 
 
-
-
-//        ProcessAsync processAsync = new ProcessAsync(list,getContext(),"http://feeds.feedburner.com/ndtvnews-trending-news");
-//        processAsync.execute();
 
 
         return view;

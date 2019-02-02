@@ -35,7 +35,7 @@
     <item
             android:id="@+id/health"
             android:icon="@drawable/health_icon"
-            android:title="Health" />
+            android:title="Food" />
     </group>
 
 </menu>
