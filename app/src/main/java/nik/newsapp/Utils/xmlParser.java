@@ -78,9 +78,6 @@ public class xmlParser {
 
         return results;
     }
-    public HashMap<String,String> getTopArticle(){
-        return results.get(0);
-    }
 
 
 }

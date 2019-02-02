@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -24,8 +25,12 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import javax.inject.Inject;
+
 import nik.newsapp.Adapters.MyAdapter;
+import nik.newsapp.Adapters.RecyclerAdapter;
 import nik.newsapp.AlarmReceiver;
+import nik.newsapp.Injection.DaggerApplicationComponent;
 import nik.newsapp.R;
 import nik.newsapp.Utils.BackgroundProcess;
 import nik.newsapp.Utils.xmlParser;
@@ -36,6 +41,8 @@ public class Main extends AppCompatActivity {
     ViewPager pager=null;
     DrawerLayout mDrawerLayout;
     ListView feedList;
+    @Inject
+    RecyclerAdapter recyclerAdapter;
 
 
     @Override
@@ -45,6 +52,14 @@ public class Main extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         mDrawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
         setSupportActionBar(toolbar);
+
+
+        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.DarkTheme);
+            Log.d("dark", "onCreate: set main 1");
+        }
+
+
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -94,6 +109,10 @@ public class Main extends AppCompatActivity {
             tabLayout.getTabAt(1).setIcon(getResources().getDrawable(R.drawable.trending_selector));
         }
 
+        DaggerApplicationComponent.builder().build().inject(this);
+        if(recyclerAdapter!=null){
+            Log.d("sd", "onCreate: donee");
+        }
         BackgroundProcess backgroundProcess = new BackgroundProcess("http://feeds.feedburner.com/ndtvnews-trending-news");
         backgroundProcess.execute();
         //Log.d("topp",backgroundProcess.getTopArticle().toString());
@@ -115,6 +134,7 @@ public class Main extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(Main.this,Settings.class));
             return true;
         }
         switch (item.getItemId()) {

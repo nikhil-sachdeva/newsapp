@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tab_layout"
                     app:tabGravity="fill"
-                    app:tabSelectedTextColor="@color/colorPrimaryDark"
+                    app:tabSelectedTextColor="#e54689"
                     app:tabMode="fixed"
                     android:background="@color/colorPrimary"
                     app:tabTextColor="@color/white"/>
@@ -53,7 +53,8 @@
 
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
-            android:background="#ffccBD"
+            android:background="#CFD8DC"
+            android:theme="@style/NavStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="App">
+        <attr name="colorPrimaryDark" format="color"/>
+        <attr name="primaryTextColor" format="color"/>
+        <attr name="secondaryTextColor" format="color"/>
+        <attr name="dividerColor" format="color"/>
+        <attr name="backgroundCardColor" format="color"/>
+    </declare-styleable>
+</resources>
