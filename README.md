@@ -31,3 +31,12 @@
 3. RxJava2/RxAndroid2 : I used RxJava for background asynchronous calls to the RSS link and receiving data. I earlier used AsyncTask for the same job(as can be seen in the async branch) but upon realising that RxJava is better (more scalable and less error-prone), I switched to it for the same job. The branches can serve as a comparison for the code differences of the two methods achieving the same task i.e. retrieving data via a different thread. <br><br>
 4. Broadcast Receiver and AlarmManager : Used to recieve notification intents to create a notification of the top trending news article at regualar intervals.<br><br>
 5. Dagger : Used for dependency injection in the project. It helped me include loose-coupling between components.
+
+## Resources :
+#### According to me, these are the most sought after resources for implementing these features.
+https://developer.android.com/ <br>
+https://github.com/ReactiveX/RxJava/wiki/Creating-Observables <br>
+https://android.jlelse.eu/dagger-2-part-i-basic-principles-graph-dependencies-scopes-3dfd032ccd82 <br>
+https://android.jlelse.eu/practical-guide-to-dagger-76398948a2ea <br>
+https://carthrottle.io/how-to-implement-flexible-night-mode-in-your-android-app-f00f0f83b70e <br>
+http://www.vogella.com/tutorials/RxJava/article.html <br>
