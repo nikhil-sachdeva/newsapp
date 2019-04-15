@@ -20,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
+import nik.newsapp.Model.Article;
 import nik.newsapp.Utils.BackgroundProcess;
 import nik.newsapp.Utils.xmlParser;
 import nik.newsapp.Views.Main;
@@ -40,12 +41,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        HashMap<String,String> article = (HashMap<String, String>) intent.getSerializableExtra("article");
+        Article article = (Article) intent.getSerializableExtra("article");
         if(article!=null) {
-            Log.d("in broadcast", "onReceive: " + article.get("title"));
+            Log.d("in broadcast", "onReceive: " + article.getTitle());
         }
 
-             Picasso.get().load(article.get("Image")).into(new Target() {
+             Picasso.get().load(article.getImageUrl()).into(new Target() {
                  @Override
                  public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                      image=bitmap;
@@ -67,8 +68,8 @@ public class AlarmReceiver extends BroadcastReceiver {
             mNotifyBuilder = new NotificationCompat.Builder(
                     context).setLargeIcon(image)
                     .setSmallIcon(R.drawable.ic_launcher_background)
-                    .setContentTitle(article.get("title"))
-                    .setContentText(article.get("description"))
+                    .setContentTitle(article.getTitle())
+                    .setContentText(article.getDescription())
                     .setWhen(when)
                     .setContentIntent(pendingIntent);
 

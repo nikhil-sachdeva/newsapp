@@ -27,12 +27,13 @@ import io.reactivex.schedulers.Schedulers;
 import nik.newsapp.Adapters.RecyclerAdapter;
 import nik.newsapp.AlarmReceiver;
 import nik.newsapp.Injection.DaggerApplicationComponent;
+import nik.newsapp.Model.Article;
 import nik.newsapp.Views.Trending;
 
 import static android.content.Context.ALARM_SERVICE;
 
 public class BackgroundProcess {
-    ArrayList<HashMap<String,String>> results = new ArrayList<>();
+    ArrayList<Article> results = new ArrayList<>();
     ProgressDialog dialog;
     RecyclerView list;
     Context context;
@@ -42,7 +43,7 @@ public class BackgroundProcess {
     @Inject
     RecyclerAdapter recyclerAdapter;
 
-    HashMap<String,String> article= new HashMap<>();
+    Article article= new Article();
     public  BackgroundProcess(){
     }
 
@@ -108,7 +109,7 @@ if(dialog!=null)  dialog.show();
                         article=results.get(0);
                         Calendar calendar = Calendar.getInstance();
                         Intent intent1 = new Intent(context, AlarmReceiver.class);
-                        if(article!=null && !article.isEmpty()) {
+                        if(article!=null) {
                             intent1.putExtra("article", article);
                         }
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -128,7 +129,7 @@ if(dialog!=null)  dialog.show();
 
 
 
-    public void setTopArticle(HashMap<String,String> article){
+    public void setTopArticle(Article article){
 
         this.article=article;
 

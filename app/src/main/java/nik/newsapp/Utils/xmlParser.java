@@ -14,17 +14,19 @@ import java.util.HashMap;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import nik.newsapp.Model.Article;
+
 /**
  * Created by nikhil on 26/07/2018.
  */
 
 public class xmlParser {
 
-   private ArrayList<HashMap<String ,String>> results=new ArrayList<>();
+   private ArrayList<Article> results=new ArrayList<>();
 
 
 
-    public ArrayList<HashMap<String,String >> processXML(InputStream inputStream) throws Exception{
+    public ArrayList<Article> processXML(InputStream inputStream) throws Exception{
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = null;
 
@@ -37,36 +39,36 @@ public class xmlParser {
         NodeList itemChildren=null;
         Node currentChild=null;
         Node currentItem=null;
-        HashMap<String,String > feedMap=null;
+        Article feedMap=null;
 
 
         for(int i=0;i<itemsList.getLength();i++){
             currentItem=itemsList.item(i);
             itemChildren=currentItem.getChildNodes();
-            feedMap = new HashMap<>();
+            feedMap = new Article();
             for(int j=0;j<itemChildren.getLength();j++){
                 currentChild=itemChildren.item(j);
                 if(currentChild.getNodeName().equalsIgnoreCase("title")){
-                    feedMap.put("title",currentChild.getTextContent());
+                    feedMap.setTitle(currentChild.getTextContent());
                 }
                 if(currentChild.getNodeName().equalsIgnoreCase("link")){
-                    feedMap.put("link",currentChild.getTextContent());
+                    feedMap.setLink(currentChild.getTextContent());
                 }
                 if(currentChild.getNodeName().equalsIgnoreCase("pubDate")){
-                    feedMap.put("Date",currentChild.getTextContent());
+                    feedMap.setDate(currentChild.getTextContent());
                 }
                 if(currentChild.getNodeName().equalsIgnoreCase("StoryImage")){
-                    feedMap.put("Image",currentChild.getTextContent());
+                    feedMap.setImageUrl(currentChild.getTextContent());
                 }
                 if(currentChild.getNodeName().equalsIgnoreCase("description")){
-                    feedMap.put("description",currentChild.getTextContent());
+                    feedMap.setDescription(currentChild.getTextContent());
                 }
 
 
 
             }
 
-            if(feedMap!=null && !feedMap.isEmpty()){
+            if(feedMap!=null){
                 results.add(feedMap);
 
 
